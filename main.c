@@ -5,7 +5,7 @@
 
 int main() {
 
-    // use your modules here
+    printf("test");
 
     return 0;
 }
