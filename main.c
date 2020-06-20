@@ -1,12 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h> 
 //#include "generator.h"
-//#ifdef __WIN32__
-//#include <unistd.h>
-//#endif //__WIN32__
-
-
 
 
 //Global var
@@ -24,16 +20,14 @@
 
 char logAddress[240];
 char judgeFile[240];
-//char 
+int testCaseView = 0; //variable to check if show caseing results int terminal is needed 0 means No , 1 Yes
 /**
  * @help
  * handels help!
  * no argument needed
  * fucntion suold be cross-platrofrm - not tested
  * 
- * im thinking about adding a KING functionality
- * so that you can set an static judge file for your current terminal session
- * 
+ * a -j option will be added so if you have already generated your outputs (wich shoud be in the specifed format or generated bay the program before)
  * also unistall would be nice
  * 
  * */
@@ -50,12 +44,12 @@ void help(){
 }
 
 //Global var
-
+//arg c argv https://www.geeksforgeeks.org/command-line-arguments-in-c-cpp/
 int main(int argc,char *argv[]) {
-#ifdef __linux__
+
 
  
-#include <unistd.h> 
+
 
 		int opt;
 		
@@ -65,7 +59,7 @@ int main(int argc,char *argv[]) {
 			switch (opt)
 			{
 			case 's': //show testCase results
-				printf("OK\n"); //temp
+				testCaseView = 1;
 				break;
 			case 'L': //set a custom file for log results
 				strcpy(logAddress,optarg);
@@ -85,7 +79,7 @@ int main(int argc,char *argv[]) {
 				break;
 			}
 		}
-		//printf("argc: %d\toptind: %d\n",argc,optind);  temp
+		
 		if (argc - optind < 2){//catch lack of main argument
 
 			printf("  \n%s\n\n",YEL"WARNING:"RESET"  Sufficent main arguments were not provided.\n          For more info enter adjudicator -h.");
@@ -94,7 +88,7 @@ int main(int argc,char *argv[]) {
 		// optind is for the extra arguments 
 		// which are not parsed 
 		for (; optind < argc; optind++) {
-			if(optind > 3){//catch extra argument
+			if(argc - optind > 2){//catch extra argument
 				printf("  \n%s\n\n",YEL"WARNING:"RESET"  Extra arguments were given.\n          For more info enter adjudicator -h.");
 				return 5;
 			
@@ -105,10 +99,10 @@ int main(int argc,char *argv[]) {
 		}
 
 		
-
+		
 		return 0;
 	
 
-#endif // __linux__
+
     
 }
