@@ -5,7 +5,7 @@
 
 Compile()
   
-int generator(char inOutAdress,char codeAddress[]){
+int generator(char inOutAdress[],char codeAddress[]){
   system("cd inOutAddress");
   
   int i=1;
