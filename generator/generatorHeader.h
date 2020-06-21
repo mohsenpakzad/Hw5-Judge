@@ -1,7 +1,7 @@
 #pragma once
 
 char inputFolderAddress[100];
-char inputFolderAddress[100];
+char outputFolderAddress[100];
 
 char 
 
