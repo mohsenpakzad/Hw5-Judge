@@ -27,6 +27,7 @@ int generator(char inOutAdress,char codeAddress[]){
     
     i++;
   }
+  return 1;
 }
 
 // define your functions and global variables here
