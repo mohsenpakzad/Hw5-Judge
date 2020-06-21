@@ -20,7 +20,7 @@ int generator(char inOutAdress,char codeAddress[]){
     strcpy(outputName,"output//");
     strncat(outputName, strNum, 4); //add number to output name
     strncat(outputName, ".out", 4); //add .out to output name
-    system("codeAddress < inputName > outputname");
+    system("codeAddress < inputName > outputName");
     
     i++;
   }
