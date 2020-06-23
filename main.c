@@ -2,73 +2,83 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "generatorHeader.h"
+#include "globalHeader.h"
+#include <sys/stat.h>
+#include <sys/types.h>
 
-//Global var
-//move to header
+/**INWORKS
+* catch if gerneator lunch 
+* sepecify IO folder hierchy in help
+
+
+* update help add input output file format
+* */
+
+//ENDINWORKS
 
 /**
  * @help
  * handels help!
  * no argument needed
- * fucntion suold be cross-platrofrm - not tested
  * 
- * a -j option will be added so if you have already generated your outputs (wich shoud be in the specifed format or generated bay the program before)
- * also unistall would be nice
  * 
  * */
 
-void help()
+void help() /*shoud be updated last*/
 {
 	putchar('\n');
-	printf("  \n%s  %s\n\n", GRN "FORMAT:" RESET, "adjudicator -s -h -l logfile "MAG"-G -l"RESET" IN/OUT SUSPECT"); //temp names
-	printf("  \n%s\n         %s\n\n", RED "NOTICE:  " RESET "Options "MAG"-G"RESET" and "MAG"-J"RESET" cannot be active simultaneously.But one of them must be present.",
-	"Also in each terminal session "MAG"Generator"RESET" module should be run at least once before using "MAG"Judge"RESET" module.");
-	printf("  \n%s\n\n", GRN "OPTIONS:" RESET);													 //temp names
-	printf("  %-15s%20s\n\n", "-G", "Sets program to "MAG"Generator"RESET" mode");
-	printf("  %-15s%20s\n\n", "-J", "Sets program to "MAG"Judge"RESET" mode");
+	printf("  \n%s  %s\n\n", GRN "FORMAT:" RESET, "adjudicator -s -h " MAG "-G " CYN "IOFolder" RESET " " MAG "-J" RESET " " CYN "program.c" RESET); //temp names
+	printf("  \n%s\n         %s\n\n", RED "NOTICE:  " RESET "Options " MAG "-G" RESET " and " MAG "-J" RESET " cannot be active simultaneously.But one of them must be active.",
+		   "In each terminal session " MAG "Generator" RESET " module should be run at least once before using " MAG "Judge" RESET " module.");
+	printf("  \n%s\n\n", GRN "TESTCASE_FOLDER_STRUCTURE:" RESET);
+	printf("        TestCase\n"
+		   "          /  \\\n"
+		   "         /    \\\n"
+		   "        /      \\\n"
+		   "       /        \\\n"
+		   "    Input     Output\n"
+		   "      |          |\n"
+		   "    1.in       1.out\n"
+		   "    2.in       2.out\n"
+		   "    3.in       3.out\n"
+		   "    ...\t       ...\t\t\n"
+		   "    x.in       y.out\n\n"
+		   "");
+	printf("  \n%s\n\n", GRN "OPTIONS:" RESET);
+	printf("  %-15s%20s\n\n", "-G", "Sets program to " MAG "Generator" RESET " mode");
+	printf("      %-20s\n", "--This option requiers an argument of input directory in the format specified above.");
+	printf("      %-20s\n\n", "--In this mode " CYN "program.c" RESET " is judgeFile.c");
+	printf("  %-15s%20s\n\n", "-J", "Sets program to " MAG "Judge" RESET " mode");
+	printf("      %-20s\n\n", "--In this mode " CYN "program.c" RESET " is suspectFile.c");
 	printf("  %-15s%20s\n\n", "-s", "Show result of all test cases on screen.");
 	printf("  %-15s%20s\n\n", "-h", "Show all available options.");
-	printf("  %-15s%20s\n\n", "-l", "Specify a file to direct output.");
-	printf("      %-20s\n\n", "--This option requiers an argument in the format specified above.");
 	printf("  \n%s\n", RED "NOTICE:  " RESET "All given arguments must be name of a file exsisting in the current directory or it's path.");
 }
 
-//Global var
-//arg c argv https://www.geeksforgeeks.org/command-line-arguments-in-c-cpp/
 int main(int argc, char *argv[])
 {
 
-	int opt,necessaryOptionCount = 0;
-	//create a file so that we can check if generator module has been ran at least once
-	system("cd /tmp");
-	system("touch generatorModule.History");
-	sytem("echo \"0\" > generatorModule.History");//put zero for no
-	system("trap 'rm -f /tmp/generatorModule.History; exit' ERR EXIT"); // delete file if terminal is closed due to error or manual exit
-
-	while ((opt = getopt(argc, argv, ":l:GJhs")) != -1)
+	int opt, necessaryOptionCount = 0;
+	while ((opt = getopt(argc, argv, ":G:Jhs")) != -1)
 	{
 
-		
 		switch (opt)
 		{
-		case 'G': //turn on 
+		case 'G': //turn on
 			necessaryOptionCount++;
 			generatorModuleState = ON;
-			system("bash generatorModuleOn.sh");
+			strcpy(inOutFileAdress, optarg);
 			break;
 
 		case 'J': //turn on judge module
 			necessaryOptionCount++;
 			judgeModuleState = ON;
 			break;
-		
+
 		case 's': //show testCase results
 			testCaseViewState = 1;
 			break;
-		case 'L': //set a custom file for log results
-			strcpy(logAddress, optarg);
-			break;
+
 		case 'h': //help
 			help();
 			return 1;
@@ -83,39 +93,125 @@ int main(int argc, char *argv[])
 			break;
 		}
 
-		if(necessaryOptionCount > 1){// catch dual operation mode
+		if (necessaryOptionCount > 1)
+		{ // catch dual operation mode
 			printf("  \n%s\n\n", YEL "WARNING:" RESET "  More than one operation modes were selected.\n          For more info enter adjudicator -h.");
 			return 6;
 		}
 	}
-	
-	if(necessaryOptionCount == 0){ // catch lack of operation mode
+
+	if (necessaryOptionCount == 0)
+	{ // catch lack of operation mode
 		printf("  \n%s\n\n", YEL "WARNING:" RESET "  Operation mode was not specified.\n          For more info enter adjudicator -h.");
+		return 8;
 	}
 
-	if (argc - optind < 2)
+	if (argc - optind < 1)
 	{ //catch lack of main argument
 
-		printf("  \n%s\n\n", YEL "WARNING:" RESET "  Sufficent main arguments were not provided.\n          For more info enter adjudicator -h.");
+		printf("  \n%s\n\n", YEL "WARNING:" RESET "  program.c argument was not provided.\n          For more info enter adjudicator -h.");
+		return 7;
 	}
 	// optind is for the extra arguments
 	// which are not parsed
 	for (; optind < argc; optind++)
-	{	
-		if (argc - optind > 2)
+	{
+		if (argc - optind > 1)
 		{ //catch extra argument
 			printf("  \n%s\n\n", YEL "WARNING:" RESET "  Extra arguments were given.\n          For more info enter adjudicator -h.");
 			return 5;
 		}
 
-		
-
 		//printf("\t\t\n\nextra arguments %s %d argc: %d:\n", argv[optind],optind,argc);
 	}
-	strcpy(inOutFileAdress,argv[argc -2]);
-	strcpy(judgeFileAdress,argv[argc -1]);
 
-	//catch 
-	
+	if (generatorModuleState == ON)
+	{
+
+		strcpy(judgeFileAdress, argv[argc - 1]);
+		char ioAdressHold[ADRESS_ARRAY_SIZE];
+		strcpy(ioAdressHold, inOutFileAdress);
+		if (dirExist(ioAdressHold) == YES)
+		{ //catch given directory not existing
+
+			//printf("%s\n%s\n",inOutFileAdress,judgeFileAdress);
+			system("bash /usr/local/adjudicator/Script/normalizeTestCase.sh");
+			char argument[ADRESS_ARRAY_SIZE]; // hold variable system argments
+			strcpy(argument, "rsync -r ");	  //copy content of folder to localy created folder
+			strcat(argument, inOutFileAdress);
+			//rsync needs / at the end of first argument to execute properly
+			//there might be some problems regarding the fact that people maight
+			//put / at end of argument
+			//The next piece handels this issue
+			if (argument[strlen(argument) - 1] != '/')
+				strcat(argument, "/");
+			strcat(argument, " TestCase/Input");
+			system(argument);
+			strcpy(inOutFileAdress, "TestCase/Input");
+			system(argument);
+		}
+
+		else
+		{
+			printf("  \n%s\n\n", YEL "WARNING:" RESET "  Sepecified directory dose not exist.\n          For more info enter adjudicator -h.");
+			return 9;
+		}
+		char judgeAdressHold[ADRESS_ARRAY_SIZE];
+		strcpy(judgeAdressHold, judgeFileAdress);
+		if (typeCExist(judgeAdressHold) == YES)
+		{ //catch given file not being .c file
+
+			//generator(ioAdressHold,judgeAdressHold);
+		}
+		else
+		{
+			printf("  \n%s\n\n", YEL "WARNING:" RESET "  Sepecified judgeFile.c file dose not exist.\n          For more info enter adjudicator -h.");
+			return 10;
+		}
+	}
+
+	else if (judgeModuleState == ON)
+	{
+		strcpy(inOutFileAdress, "TestCase/Input");
+		strcpy(suspectFileAdress, argv[argc - 1]);
+		char suspectAdressHold[ADRESS_ARRAY_SIZE];
+		char ioAdressHold[ADRESS_ARRAY_SIZE];
+		strcpy(ioAdressHold, inOutFileAdress);
+		strcpy(suspectAdressHold, suspectFileAdress);
+		if (dirExist(ioAdressHold) == YES)
+		{
+
+			if ((ioFileCounter("TestCase/Input") == -1) || (ioFileCounter("TestCase/Output") == -1))
+			{
+				printf("  \n%s\n\n", YEL "WARNING:" RESET "  generation process has malfunctioned,\n          Or one of the IO folders has been croupted.\n          You can try running " MAG "Generator" RESET " module again");
+				return 11;
+			}
+
+			else if (ioFileCounter("TestCase/Input") != ioFileCounter("TestCase/Output"))
+			{
+
+				printf("  \n%s\n\n", YEL "WARNING:" RESET "  generation process has malfunctioned,\n          Input count and output count dont match.\n          You can try running " MAG "Generator" RESET " module again");
+			}
+		}
+		else
+		{
+			printf("  \n%s\n\n", YEL "WARNING:" RESET "  Sepecified directory dose not exist.\n          For more info enter adjudicator -h.");
+			return 9;
+		}
+
+		if (typeCExist(suspectAdressHold) == YES)
+		{
+			//judge
+		}
+
+		else
+		{
+			printf("  \n%s\n\n", YEL "WARNING:" RESET "  Sepecified suspectFile.c file dose not exist\n          Or it is not a .c file\n          For more info enter adjudicator -h.");
+			return 10;
+		}
+	}
+
+	//catch
+
 	return 0;
 }
