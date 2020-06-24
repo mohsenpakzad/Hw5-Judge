@@ -10,7 +10,7 @@
 Compile()
   
 int generator(char inOutAdress[],char codeAddress[]){
-  linuxCodeToMoveToAnAddress(inOutaddress);
+  MoveToAnAddress(inOutaddress);
   
   int i=1;
   while(i<=numberOfTestCases){  //numberOfTestCases is defined in generatorHeader.h and is given value in main.c
@@ -29,7 +29,7 @@ int generator(char inOutAdress[],char codeAddress[]){
     strcat(outputName, strNum); //add number to output name
     strcat(outputName, ".out"); //add .out to output name
     
-    linuxCodeToGiveInputToCodeAndSaveOutput(codeAddress, inputName, outputName);
+    GiveInputToCodeAndSaveOutput(codeAddress, inputName, outputName);
     
     i++;
   }
