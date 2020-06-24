@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_TEST_CASE 1000
+
 #pragma once
 
 int numberOfTestCases;
