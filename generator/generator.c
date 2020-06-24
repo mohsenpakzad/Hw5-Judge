@@ -1,3 +1,7 @@
+//compile function
+//dont know what to add to the generatotHeader.c/.h
+//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,28 +10,28 @@
 Compile()
   
 int generator(char inOutAdress[],char codeAddress[]){
-  system("cd inOutAddress");
+  linuxCodeToMoveToAnAddress(inOutaddress);
   
   int i=1;
-  while(1){
-    char strNum[MAX_TEST_CASE];
+  while(i<=numberOfTestCases){  //numberOfTestCases is defined in generatorHeader.h and is given value in main.c
+    char strNum[MAX_TEST_CASE]; //MAX_TEST_CASE is defined in generatorHeader.h
     sprintf(strNum, "%d", i); //int i into string
     
-    //create input name
+    //create input name => "input\\in(number).in"
     char inputName[11];
-    strcpy(inputName,"input//");
-    strncat(inputName, strNum, 4); //add number to input name
-    strncat(inputName, ".in", 3); //add .in to input name
-    //create output name
+    strcpy(inputName,"input\\in");
+    strcat(inputName, strNum); //add number to input name
+    strcat(inputName, ".in"); //add .in to input name
+    
+    //create output name => "output\\out(number).in"
     char outputName[12];
-    strcpy(outputName,"output//");
-    strncat(outputName, strNum, 4); //add number to output name
-    strncat(outputName, ".out", 4); //add .out to output name
-    system("codeAddress < inputName > outputName");
+    strcpy(outputName,"output\\out");
+    strcat(outputName, strNum); //add number to output name
+    strcat(outputName, ".out"); //add .out to output name
+    
+    linuxCodeToGiveInputToCodeAndSaveOutput(codeAddress, inputName, outputName);
     
     i++;
   }
   return 1;
 }
-
-// define your functions and global variables here
