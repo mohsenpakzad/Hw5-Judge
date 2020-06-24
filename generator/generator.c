@@ -1,6 +1,6 @@
 //compile function
 //dont know what to add to the generatotHeader.c/.h
-//
+//debug
 
 #include <stdio.h>
 #include <stdlib.h>
