@@ -1,5 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #pragma once
-// declare your functions and global variables here
 
 int numberOfTestCases;
 
