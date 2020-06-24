@@ -2,6 +2,24 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+void moveToAnAddress(char address[]){
+   char str[100+3];
+  strcpy(str, "cd ");
+  strcpy(str, address);
+  //str = "cd address"
+  system(str);
+}
+void giveInputToCodeAndSaveOutput(char codeAddress[],char inputAddress[],char outputAddress[]){
+  char linuxCode[300+6];
+  strcpy(linuxCode, codeAddress);
+  strcat(linuxCode, " < ");
+  strcat(linuxCode, inputAddress);
+  strcat(linuxCode, " > ");
+  strcat(linuxCode, outputAddress);
+  //linuxCode = "codeAddress < inputAddress > outputAddress"
+  system(linuxCode); 
+}   
 /**
  * fucntion compiles judge file and puts it into temp for further use
  * @param fileAdress address of judge file
