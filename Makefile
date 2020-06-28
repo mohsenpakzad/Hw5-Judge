@@ -2,8 +2,8 @@
 # Makefile created by Dev-C++ 5.11 Edited by me !
 
 CC       = gcc.exe
-OBJ      = main.o generator/generator.o judge/judge.o common/showPath/showPath.o common/numberOfFiles/numberOfFiles.o common/compile/compile.o common/checkEmptyFile/checkEmptyFile.o common/checkDir/checkDir.o common/changeColor/changeColor.o
-LINKOBJ  = main.o generator/generator.o judge/judge.o common/showPath/showPath.o common/numberOfFiles/numberOfFiles.o common/compile/compile.o common/checkEmptyFile/checkEmptyFile.o common/checkDir/checkDir.o common/changeColor/changeColor.o
+OBJ      = main.o generator/generator.o judge/judge.o common/showPath/showPath.o common/numberOfFiles/numberOfFiles.o common/compile/compile.o common/checkEmptyFile/checkEmptyFile.o common/checkDir/checkDir.o common/changeColor/changeColor.o common/copyFile/copyFile.o
+LINKOBJ  = main.o generator/generator.o judge/judge.o common/showPath/showPath.o common/numberOfFiles/numberOfFiles.o common/compile/compile.o common/checkEmptyFile/checkEmptyFile.o common/checkDir/checkDir.o common/changeColor/changeColor.o common/copyFile/copyFile.o
 BIN      = hw-judge.exe
 CXXFLAGS = $(CXXINCS) -g3
 CFLAGS   = $(INCS) -g3
@@ -45,3 +45,6 @@ common/checkDir/checkDir.o: common/checkDir/checkDir.c
 
 common/changeColor/changeColor.o: common/changeColor/changeColor.c
 	$(CC) -c common/changeColor/changeColor.c -o common/changeColor/changeColor.o $(CFLAGS)
+	
+common/copyFile/copyFile.o: common/copyFile/copyFile.c
+	$(CC) -c common/copyFile/copyFile.c -o common/copyFile/copyFile.o $(CFLAGS)

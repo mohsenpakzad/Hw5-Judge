@@ -36,18 +36,26 @@ int main(int argc, char *argv[]) {
 		1 - for generator : -g path
 		2 - for judge : -j testcase path
 		3 - for judge : -j testcase path -c code path
+		4 - help : -h or -help or -?
 	*/
 		choice=parser(argc,argv);
 		switch(choice){
 			case 0 :changeColor(RED);
 					printf("The syntax is Incorrect.\n");
 					changeColor(WHITE);
+					printf("For getting help enter : %s -h\n",PROGRAM_NAME);
 					break;
 			case 1 :generator(argv[2]);
 					break;
 			case 2 :judge(argv[2],codePath);
 					break;
 			case 3 :judge(argv[2],argv[4]);
+					break;
+			case 4 :printf("Generator : %s -g [file path]\n",PROGRAM_NAME);
+					printf("Judge : %s -j [file path]\n",PROGRAM_NAME);
+					printf("Judge : %s -j [file path] -c [code path]\n",PROGRAM_NAME);
+					pressAnyKey();
+					getch();
 					break;
 		}
 	}

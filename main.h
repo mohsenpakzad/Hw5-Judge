@@ -55,8 +55,9 @@ int parser(int argc , char *argv[]){
 		1 - for generator : -g path
 		2 - for judge : -j testcase path
 		3 - for judge : -j testcase path -c code path
+		4 - help : -h or -help or -?
 	*/
-	if(strcmp(argv[1],"-g")==0){
+	if(strcmp(argv[1],"-g")==0 && argc==3){
 		return 1;
 	}
 	else if(strcmp(argv[1],"-j")==0 && argc==3){
@@ -65,7 +66,12 @@ int parser(int argc , char *argv[]){
 	else if(strcmp(argv[1],"-j")==0 && argc==5){
 		return 3;
 	}
-	else return 0;
+	else if ((strcmp(argv[1],"-h")==0 || strcmp(argv[1],"-h")==0 || strcmp(argv[1],"-?")==0 || strcmp(argv[1],"-help")==0) && argc==2){
+		return 4;
+	}
+	else {
+		return 0;
+	}
 	
 }
 
