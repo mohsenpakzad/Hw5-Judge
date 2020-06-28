@@ -10,6 +10,7 @@
 #include "common/common.h"
 
 #define MAX_ARRAY_SIZE 100
+#define PROGRAM_NAME "hw-judge"
 
 #define RED "r"
 #define GREEN "g"
