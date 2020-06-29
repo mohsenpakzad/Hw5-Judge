@@ -1,3 +1,5 @@
 #pragma once
+#include "../mainGlobal.h"
 
-// declare your functions and global variables here
+int generator(const char filePath[]);
+int checkFormat(const char filePath[]);
