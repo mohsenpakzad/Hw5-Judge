@@ -10,7 +10,7 @@ int doesExist(const char *name){
 	FILE *f;
 	if((f = fopen(name, "r"))){
 		fclose(f);
-        return 1;
+        	return 1;
 	}
 	return 0;
 }
