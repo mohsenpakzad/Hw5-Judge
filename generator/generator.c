@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include "generator.h"
 
-char input[10000000000], exefile[1000];
+char input[10000000000];
+char exefile[1000];
 
 int doesExist(const char *name){
 	FILE *f;
