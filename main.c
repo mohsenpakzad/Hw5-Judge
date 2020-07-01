@@ -4,8 +4,8 @@
 #include "main.h"
 
 int main(int argc, char *argv[]) {
-	char folderPath[100];
-	char codePath[100];
+	char folderPath[MAX_ARRAY_SIZE];
+	char codePath[MAX_ARRAY_SIZE];
 	int choice;
 	system("cls");
 	if(argc==1){

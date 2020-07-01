@@ -9,7 +9,7 @@
 
 #include "common/common.h"
 
-#define MAX_ARRAY_SIZE 100
+#define MAX_ARRAY_SIZE 1000
 #define PROGRAM_NAME "hw-judge"
 
 #define RED "r"
