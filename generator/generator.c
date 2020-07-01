@@ -172,10 +172,10 @@ int generator(const char filePath[]){
 	sprintf(testCaseDirIn, "%s/inputs", testCaseDir);
 	sprintf(testCaseDirOut, "%s/outputs", testCaseDir);
 	fileFormatError=checkFormat(filePath);
+	chdir(initialPath);
 	if(fileFormatError==0){ // checking for validation of path file given
 		sprintf(completeFilePath, "%s/code.c", filePath);
 		sprintf(buffer, "%s/code.exe", filePath); // place and name of result exe file
-		chdir(initialPath);
 		compileStatus=compile(completeFilePath,buffer);
 		sprintf(buffer, "%s/in", filePath);		
 		numberOfInputs=numberOfFiles(buffer);
