@@ -161,6 +161,7 @@ int generator(const char filePath[]){
 	char completeFilePath[MAX_ARRAY_SIZE];
 	char temp[MAX_ARRAY_SIZE];
 	char initialPath[MAX_ARRAY_SIZE];
+	char *forbiddenWords[] = { "system", "<dirent.h>", "<dir.h>", "fopen" };
 	strcpy(initialPath,getcwd(buffer, sizeof(buffer)));
 	sprintf(testCaseDir, "%s/../testcases", filePath);
 	sprintf(testCaseDirIn, "%s/inputs", testCaseDir);
@@ -181,10 +182,24 @@ int generator(const char filePath[]){
 	if(compileStatus==0){
 		colorMessage(GREEN,"Compiled succesfully.\n",WHITE);
 		pressAnyKey();
+		system("cls");
+		int i;
+		int forbidenWordStatus=0 ; // 0 for ok
+		for(i=0;i<NUMBER_OF_FORBIDDEN_WORDS;i++){
+			forbidenWordStatus=searchInFile(completeFilePath,forbiddenWords[i]);
+			if(forbidenWordStatus){
+				colorMessage(YELLOW,"System protection ...\n",WHITE);
+				sprintf(temp, "%s/code.exe",filePath);
+				if (remove(temp) != 0) {
+					printError("Unable to delete the exe file ...\n");
+				}
+				pressAnyKey();
+				return -1;
+			}
+		}
 		mkdir(testCaseDir);
 		mkdir(testCaseDirIn);
 		mkdir(testCaseDirOut);
-		int i;
 		chdir(filePath);
 		system("cls");
 		for(i=0;i<numberOfInputs;i++){ // generating ouput from given code

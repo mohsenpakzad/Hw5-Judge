@@ -139,6 +139,7 @@ int judge(const char filePath[],char codePath[]){
 	char initialPath[MAX_ARRAY_SIZE];
 	strcpy(initialPath,getcwd(temp, sizeof(temp)));
 	int right=0, wrong=0, numberOfTestCases;
+	char *forbiddenWords[] = { "system", "<dirent.h>", "<dir.h>", "fopen" };
 	sprintf(exeDir, "%s/a.exe", filePath);
 	if ( checkFormatJudge(filePath)==0 ){ // 0 for ok
 		pressAnyKey();
@@ -166,6 +167,19 @@ int judge(const char filePath[],char codePath[]){
 		pressAnyKey();
 		system("cls");
 		int i;
+		int forbidenWordStatus=0 ; // 0 for ok
+		for(i=0;i<NUMBER_OF_FORBIDDEN_WORDS;i++){
+			forbidenWordStatus=searchInFile(codePath,forbiddenWords[i]);
+			if(forbidenWordStatus){
+				colorMessage(YELLOW,"System protection ...\n",WHITE);
+				if (remove("testcases/a.exe") != 0) {
+					printError("Unable to delete the exe file ...\n");
+				}
+				pressAnyKey();
+				return -1;
+			}
+		}
+		system("cls");
 		sprintf(temp, "%s/inputs", filePath);
 		numberOfTestCases=numberOfFiles(temp);
 		printf("number of test cases: %d\n\n",numberOfTestCases);
