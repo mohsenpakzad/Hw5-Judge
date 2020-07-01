@@ -11,11 +11,9 @@
 
 #define MAX_ARRAY_SIZE 1000
 #define PROGRAM_NAME "hw-judge"
-#define NUMBER_OF_FORBIDDEN_WORDS 4
 
 #define RED "r"
 #define GREEN "g"
 #define WHITE "w"
-#define YELLOW "y"
 
 #endif
