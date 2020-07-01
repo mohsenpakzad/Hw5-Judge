@@ -6,8 +6,6 @@
 //#include <sys/stat.h>
 //#include <sys/types.h>
 
-
-
 /**
  * @help
  * handels help!
@@ -23,12 +21,12 @@ void help() /*shoud be updated last*/
 	printf("  \n%s\n         %s\n\n", RED "NOTICE:  " RESET "Options " MAG "-G" RESET " and " MAG "-J" RESET " cannot be active simultaneously.But one of them must be active.",
 		   "In each terminal session " MAG "Generator" RESET " module should be run at least once before using " MAG "Judge" RESET " module.");
 	printf("  \n%s\n\n", GRN "TESTCASE_FOLDER_STRUCTURE:" RESET);
-	printf("        "CYN"TestCase"RESET"\n"
+	printf("        " CYN "TestCase" RESET "\n"
 		   "          /  \\\n"
 		   "         /    \\\n"
 		   "        /      \\\n"
 		   "       /        \\\n"
-		   "    "CYN"Input     Output"RESET"\n"
+		   "    " CYN "Input     Output" RESET "\n"
 		   "      |          |\n"
 		   "    1.in       1.out\n"
 		   "    2.in       2.out\n"
@@ -67,7 +65,6 @@ int main(int argc, char *argv[])
 			necessaryOptionCount++;
 			judgeModuleState = ON;
 			break;
-
 
 		case 'h': //help
 			help();
@@ -123,7 +120,7 @@ int main(int argc, char *argv[])
 		if (dirExist(ioAdressHold) == YES)
 
 		{ //catch given directory not existing
-			
+
 			char argument[2 * ADRESS_ARRAY_SIZE]; // hold variable system argments
 			strcpy(argument, "rsync -r ");		  //copy content of folder to localy created folder
 			strcat(argument, inOutFileAdress);
@@ -196,7 +193,7 @@ int main(int argc, char *argv[])
 
 		if (typeCExist(suspectAdressHold) == YES)
 		{
-		judge(suspectAdressHold,inFileCounter("TestCase/Input", ".in"));
+			judge(suspectAdressHold, inFileCounter("TestCase/Input", ".in"));
 		}
 
 		else
