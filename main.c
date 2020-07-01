@@ -3,18 +3,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "globalHeader.h"
-#include <sys/stat.h>
-#include <sys/types.h>
-
-/**INWORKS
-* catch if gerneator lunch 
-* sepecify IO folder hierchy in help
+//#include <sys/stat.h>
+//#include <sys/types.h>
 
 
-* update help add input output file format
-* */
-
-//ENDINWORKS
 
 /**
  * @help
@@ -22,7 +14,7 @@
  * no argument needed
  * 
  * 
- * */
+ */
 
 void help() /*shoud be updated last*/
 {
@@ -31,12 +23,12 @@ void help() /*shoud be updated last*/
 	printf("  \n%s\n         %s\n\n", RED "NOTICE:  " RESET "Options " MAG "-G" RESET " and " MAG "-J" RESET " cannot be active simultaneously.But one of them must be active.",
 		   "In each terminal session " MAG "Generator" RESET " module should be run at least once before using " MAG "Judge" RESET " module.");
 	printf("  \n%s\n\n", GRN "TESTCASE_FOLDER_STRUCTURE:" RESET);
-	printf("        TestCase\n"
+	printf("        "CYN"TestCase"RESET"\n"
 		   "          /  \\\n"
 		   "         /    \\\n"
 		   "        /      \\\n"
 		   "       /        \\\n"
-		   "    Input     Output\n"
+		   "    "CYN"Input     Output"RESET"\n"
 		   "      |          |\n"
 		   "    1.in       1.out\n"
 		   "    2.in       2.out\n"
@@ -50,7 +42,6 @@ void help() /*shoud be updated last*/
 	printf("      %-20s\n\n", "--In this mode " CYN "program.c" RESET " is judgeFile.c");
 	printf("  %-15s%20s\n\n", "-J", "Sets program to " MAG "Judge" RESET " mode");
 	printf("      %-20s\n\n", "--In this mode " CYN "program.c" RESET " is suspectFile.c");
-	printf("  %-15s%20s\n\n", "-s", "Show result of all test cases on screen.");
 	printf("  %-15s%20s\n\n", "-h", "Show all available options.");
 	printf("  \n%s\n", RED "NOTICE:  " RESET "All given arguments must be name of a file exsisting in the current directory or it's path.");
 }
@@ -68,6 +59,8 @@ int main(int argc, char *argv[])
 			necessaryOptionCount++;
 			generatorModuleState = ON;
 			strcpy(inOutFileAdress, optarg);
+			system("rm -rf /usr/local/adjudicator/temp 2> /dev/null");
+			system("mkdir /usr/local/adjudicator/temp");
 			break;
 
 		case 'J': //turn on judge module
@@ -75,9 +68,6 @@ int main(int argc, char *argv[])
 			judgeModuleState = ON;
 			break;
 
-		case 's': //show testCase results
-			testCaseViewState = 1;
-			break;
 
 		case 'h': //help
 			help();
@@ -108,7 +98,6 @@ int main(int argc, char *argv[])
 
 	if (argc - optind < 1)
 	{ //catch lack of main argument
-
 		printf("  \n%s\n\n", YEL "WARNING:" RESET "  program.c argument was not provided.\n          For more info enter adjudicator -h.");
 		return 7;
 	}
@@ -132,12 +121,11 @@ int main(int argc, char *argv[])
 		char ioAdressHold[ADRESS_ARRAY_SIZE];
 		strcpy(ioAdressHold, inOutFileAdress);
 		if (dirExist(ioAdressHold) == YES)
-		{ //catch given directory not existing
 
-			//printf("%s\n%s\n",inOutFileAdress,judgeFileAdress);
-			system("bash /usr/local/adjudicator/Script/normalizeTestCase.sh");
-			char argument[ADRESS_ARRAY_SIZE]; // hold variable system argments
-			strcpy(argument, "rsync -r ");	  //copy content of folder to localy created folder
+		{ //catch given directory not existing
+			
+			char argument[2 * ADRESS_ARRAY_SIZE]; // hold variable system argments
+			strcpy(argument, "rsync -r ");		  //copy content of folder to localy created folder
 			strcat(argument, inOutFileAdress);
 			//rsync needs / at the end of first argument to execute properly
 			//there might be some problems regarding the fact that people maight
@@ -145,6 +133,7 @@ int main(int argc, char *argv[])
 			//The next piece handels this issue
 			if (argument[strlen(argument) - 1] != '/')
 				strcat(argument, "/");
+
 			strcat(argument, " TestCase/Input");
 			system(argument);
 			strcpy(inOutFileAdress, "TestCase/Input");
@@ -156,21 +145,28 @@ int main(int argc, char *argv[])
 			printf("  \n%s\n\n", YEL "WARNING:" RESET "  Sepecified directory dose not exist.\n          For more info enter adjudicator -h.");
 			return 9;
 		}
-		char judgeAdressHold[ADRESS_ARRAY_SIZE];
+
+		char judgeAdressHold[ADRESS_ARRAY_SIZE] = " ";
 		strcpy(judgeAdressHold, judgeFileAdress);
 		if (typeCExist(judgeAdressHold) == YES)
 		{ //catch given file not being .c file
 
-			//generator(ioAdressHold,judgeAdressHold);
+			if (generator(judgeAdressHold) == NO)
+			{
+				printf("  \n%s\n\n", YEL "WARNING:" RESET "  Generation proccess failed\n          For more info enter adjudicator -h.");
+				return 10;
+			}
+			else
+				return 0;
 		}
 		else
 		{
 			printf("  \n%s\n\n", YEL "WARNING:" RESET "  Sepecified judgeFile.c file dose not exist.\n          For more info enter adjudicator -h.");
-			return 10;
+			return 11;
 		}
 	}
 
-	else if (judgeModuleState == ON)
+	if (judgeModuleState == ON)
 	{
 		strcpy(inOutFileAdress, "TestCase/Input");
 		strcpy(suspectFileAdress, argv[argc - 1]);
@@ -181,33 +177,32 @@ int main(int argc, char *argv[])
 		if (dirExist(ioAdressHold) == YES)
 		{
 
-			if ((ioFileCounter("TestCase/Input") == -1) || (ioFileCounter("TestCase/Output") == -1))
+			if ((inFileCounter("TestCase/Input", ".in") == -1) || (inFileCounter("TestCase/Output", ".out") == -1))
 			{
 				printf("  \n%s\n\n", YEL "WARNING:" RESET "  generation process has malfunctioned,\n          Or one of the IO folders has been croupted.\n          You can try running " MAG "Generator" RESET " module again");
-				return 11;
+				return 12;
 			}
 
-			else if (ioFileCounter("TestCase/Input") != ioFileCounter("TestCase/Output"))
+			else if (inFileCounter("TestCase/Input", ".in") != inFileCounter("TestCase/Output", ".out"))
 			{
-
 				printf("  \n%s\n\n", YEL "WARNING:" RESET "  generation process has malfunctioned,\n          Input count and output count dont match.\n          You can try running " MAG "Generator" RESET " module again");
 			}
 		}
 		else
 		{
 			printf("  \n%s\n\n", YEL "WARNING:" RESET "  Sepecified directory dose not exist.\n          For more info enter adjudicator -h.");
-			return 9;
+			return 13;
 		}
 
 		if (typeCExist(suspectAdressHold) == YES)
 		{
-			//judge
+		judge(suspectAdressHold,inFileCounter("TestCase/Input", ".in"));
 		}
 
 		else
 		{
 			printf("  \n%s\n\n", YEL "WARNING:" RESET "  Sepecified suspectFile.c file dose not exist\n          Or it is not a .c file\n          For more info enter adjudicator -h.");
-			return 10;
+			return 14;
 		}
 	}
 
