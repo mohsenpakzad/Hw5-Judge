@@ -24,6 +24,15 @@ int endsWith(const char str[], const char suffix[]){
 	return 0;
 }
 
+/** 
+ * This function gets a string and checks if it's all numerical
+ * 
+ * @param number is the string needed to be checked
+ *
+ * @return integer 1 for being all numerical and 0 otherwise
+ *
+ */
+
 int isNumerical(const char number[]){
 	int i=0;
 	while(number[i]){
