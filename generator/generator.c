@@ -119,8 +119,8 @@ int checkFormat(const char filePath[]){ // validation
 		changeColor(WHITE);
 		return 1;
 	}
-	int numberOfFiles=numberOfFiles("/in");
-	char inputs[numberOfFiles][MAX_ARRAY_SIZE];
+	int numberOfInputs=numberOfFiles("/in");
+	char inputs[numberOfInputs][MAX_ARRAY_SIZE];
 	int  inputsLen = 0;
 	dr = opendir("in");							// checking the "in" folder that should only include .txt
 	while ((de = readdir(dr)) != NULL){
@@ -154,11 +154,11 @@ int checkFormat(const char filePath[]){ // validation
 }
 
 /** 
- * This function copies content of second file into first file
+ * This function generates feed for judge module
  * 
  * @param filePAth is the path of feed of generator
  *
- * @return integer 0 in case generator's feed meets standards and requirements , also prints result of failures on screen
+ * @return integer -1 in case of failure
  *
  */
 
