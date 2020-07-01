@@ -24,10 +24,6 @@ int changeColor (char color[]){
 		SetConsoleTextAttribute(hConsole, FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
 		return 1;
 	}
-	else if (strcmp(color,"yellow")==0||strcmp(color,"y")==0){
-		SetConsoleTextAttribute(hConsole, FOREGROUND_RED|FOREGROUND_GREEN);
-		return 1;
-	}
 	else {
 		return -1;
 	}
