@@ -119,7 +119,7 @@ int checkFormat(const char filePath[]){ // validation
 		changeColor(WHITE);
 		return 1;
 	}
-	int numberOfInputs=numberOfFiles("/in");
+	int numberOfInputs=numberOfFiles("in");
 	char inputs[numberOfInputs][MAX_ARRAY_SIZE];
 	int  inputsLen = 0;
 	dr = opendir("in");							// checking the "in" folder that should only include .txt
