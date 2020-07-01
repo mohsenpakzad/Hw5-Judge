@@ -72,13 +72,4 @@ int parser(int argc , char *argv[]){
 	else {
 		return 0;
 	}
-	
-}
-
-/** 
- * This function prints press any key to continue in std output
- */
-
-inline void pressAnyKey(){
-	puts("\nPress any key to continue...");
 }

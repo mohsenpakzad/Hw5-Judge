@@ -80,9 +80,7 @@ int checkInputs(char inputs[][MAX_ARRAY_SIZE], int inputsLen){
 
 int checkFormat(const char filePath[]){ // validation
 	if(checkDir(filePath)==-1){
-		changeColor(RED);
-		printf("the given path is incorrect...\n");
-		changeColor(WHITE);
+		printError("the given path is incorrect...\n");
 		return 1;
 	}
 	chdir(filePath);
@@ -101,22 +99,16 @@ int checkFormat(const char filePath[]){ // validation
 		else if(!strcmp(checkFile, "code.c")) // found testcode (code.c)
 			codeCheck = 1;
 		else if(strcmp(checkFile, "code.exe")){ // other files and folders except executable testcode (code.exe)
-			changeColor(RED);
-			printf("the main folder should only include \"in\" folder and \"code.c\" ...\n");
-			changeColor(WHITE);		
+			printError("the main folder should only include \"in\" folder and \"code.c\" ...\n");	
 			return 1;
 		}
 	}
 	if(inCheck != 1){
-		changeColor(RED);
-		printf("the main folder must contain the \"in\" folder...\n");
-		changeColor(WHITE);
+		printError("the main folder must contain the \"in\" folder...\n");
 		return 1;
 	}	
 	if(codeCheck != 1){
-		changeColor(RED);
-		printf("the main folder must contain the \"code.c\"...\n");
-		changeColor(WHITE);
+		printError("the main folder must contain the \"code.c\"...\n");
 		return 1;
 	}
 	int numberOfInputs=numberOfFiles("in");
@@ -128,25 +120,19 @@ int checkFormat(const char filePath[]){ // validation
 		if(!strcmp(checkFile, "..") || !strcmp(checkFile, "."))
 			continue;
 		else if(endsWith(checkFile, ".txt")){
-			changeColor(RED);
-			printf("the \"in\" folder should only include \".txt\" files...\n");
-			changeColor(WHITE);
+			printError("the \"in\" folder should only include \".txt\" files...\n");
 			return 1;
 		}
 		checkFile[strlen(checkFile)-4] = '\0';
 		strcpy(inputs[inputsLen++], checkFile);
 	}
 	if(!inputsLen){
-		changeColor(RED);
-		printf("the \"in\" folder should not be empty...\n");
-		changeColor(WHITE);
+		printError("the \"in\" folder should not be empty...\n");
 		return 1;
 	}
 	
 	if(checkInputs(inputs, inputsLen)){	// checking file names
-		changeColor(RED);
-		printf("file names must be numerical and sorted...\n");
-		changeColor(WHITE);
+		printError("file names must be numerical and sorted...\n");
 		return 1;	
 	}
 		
@@ -190,15 +176,11 @@ int generator(const char filePath[]){
 	}
 	else{
 		pressAnyKey();
-		getch();
 		return -1;
 	}
 	if(compileStatus==0){
-		changeColor(GREEN);
-		printf("Compiled succesfully.\n");
-		changeColor(WHITE);
+		colorMessage(GREEN,"Compiled succesfully.\n",WHITE);
 		pressAnyKey();
-		getch();
 		mkdir(testCaseDir);
 		mkdir(testCaseDirIn);
 		mkdir(testCaseDirOut);
@@ -219,16 +201,11 @@ int generator(const char filePath[]){
 			puts(temp);
 			copyResult=copyFile(buffer,temp);
 			if(copyResult==-1){
-				changeColor(RED);
-				printf("Error accured ...\n");
-				printf("Failed to copy inputs to testcase folder.");
-				changeColor(WHITE);
+				printError("Error accured ...\n");
+				printError("Failed to copy inputs to testcase folder.");
 				pressAnyKey();
-				getch();
 				if (remove("code.exe") != 0) {
-					changeColor(RED);
-					printf("Unable to delete the exe file ...");
-					changeColor(WHITE);
+					printError("Unable to delete the exe file ...");
 					getch();
 				}
 				chdir("..");
@@ -236,26 +213,18 @@ int generator(const char filePath[]){
 			}	
 		}
 		if (remove("code.exe") != 0) {
-			changeColor(RED);
-			printf("Unable to delete the exe file ...");
-			changeColor(WHITE);
+			printError("Unable to delete the exe file ...");
 			getch();
 		}
 		chdir(initialPath);
 		system("cls");
-		changeColor(GREEN);
-		printf("Done.\n");
-		changeColor(WHITE);
+		colorMessage(GREEN,"Done.\n",WHITE);
 		pressAnyKey();
-		getch();
 		system("cls");
 	}
 	else{
-		changeColor(RED);
-		printf("\nCompile failed.\n");
-		changeColor(WHITE);
+		printError("\nCompile failed.\n");
 		pressAnyKey();
-		getch();
 		return -1;
 	}
 }

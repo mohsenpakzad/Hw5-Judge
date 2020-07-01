@@ -40,9 +40,7 @@ int main(int argc, char *argv[]) {
 	*/
 		choice=parser(argc,argv);
 		switch(choice){
-			case 0 :changeColor(RED);
-					printf("The syntax is Incorrect.\n");
-					changeColor(WHITE);
+			case 0 :printError("The syntax is Incorrect.\n");
 					printf("For getting help enter : %s -h\n",PROGRAM_NAME);
 					break;
 			case 1 :generator(argv[2]);

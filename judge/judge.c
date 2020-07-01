@@ -14,9 +14,7 @@ int compareFiles(const char path1[],const char path2[]){
 	FILE *file1 = fopen(path1, "r");
 	FILE *file2 = fopen(path2, "r");
 	if (file1 == NULL || file2 == NULL){
-		changeColor(RED);
-		printf("Error : Files not open\n");
-		changeColor(WHITE);
+		printError("Error : Files not open\n");
 		return -1;
    }
 	char ch1 = getc(file1);
@@ -50,32 +48,27 @@ int compareFiles(const char path1[],const char path2[]){
  * @return integer 0 in case testcase folder meets standards and requirements , also prints result of failures on screen
  *
  */
+ 
 int checkFormatJudge (const char filePath[]){ // validation
 	char temp[MAX_ARRAY_SIZE],strNumber[MAX_ARRAY_SIZE],buffer[MAX_ARRAY_SIZE];
 	struct dirent *de;
 	int numberOfInputs,numberOfOutputs,i;
 	sprintf(temp, "%s/inputs", filePath);
-	if(checkDir(filePath)==-1){
-		changeColor(RED);
-		printf("Input directory Does NOT exist ...\n");
-		changeColor(WHITE);
+	if(checkDir(temp)==-1){
+		printError("Input directory Does NOT exist ...\n");
 		return -1;
 	}
 	sprintf(temp, "%s/outputs", filePath);
-	if(checkDir(filePath)==-1){
-		changeColor(RED);
-		printf("Output directory Does NOT exist ...\n");
-		changeColor(WHITE);
+	if(checkDir(temp)==-1){
+		printError("Output directory Does NOT exist ...\n");
 		return -1;
 	}
 	numberOfOutputs=numberOfFiles(temp);
 	sprintf(temp, "%s/inputs", filePath);
 	numberOfInputs=numberOfFiles(temp);
 	if(numberOfInputs!=numberOfOutputs){
-		changeColor(RED);
-		printf("Error ...\n");
-		printf("number of INPUTS does NOT match number of OUTPUTS.\n");
-		changeColor(WHITE);
+		printError("Error ...\n");
+		printError("number of INPUTS does NOT match number of OUTPUTS.\n");
 		return -1;
 	}
 	sprintf(temp, "%s/inputs", filePath);
@@ -100,9 +93,7 @@ int checkFormatJudge (const char filePath[]){ // validation
 		}
 	}
 	closedir(dr);
-	changeColor(GREEN);
-	printf("\nInputs Correct ...\n");
-	changeColor(WHITE);
+	colorMessage(GREEN,"\nInputs Correct ...\n",WHITE);
 	sprintf(temp, "%s/outputs", filePath);
 	dr = opendir(temp);
 	de = readdir(dr);// why these two things should exist ?!!
@@ -125,9 +116,7 @@ int checkFormatJudge (const char filePath[]){ // validation
 		}
 	}
 	closedir(dr);
-	changeColor(GREEN);
-	printf("Outputs Correct ...\n");
-	changeColor(WHITE);
+	colorMessage(GREEN,"Outputs Correct ...\n",WHITE);
 	return 0;
 }
 
@@ -153,7 +142,6 @@ int judge(const char filePath[],char codePath[]){
 	sprintf(exeDir, "%s/a.exe", filePath);
 	if ( checkFormatJudge(filePath)==0 ){ // 0 for ok
 		pressAnyKey();
-		getch();
 		system("cls");
 		if ( strlen(codePath)==0 ) {
 			showPath();
@@ -174,11 +162,8 @@ int judge(const char filePath[],char codePath[]){
 			if(strcmp(codePath,"0")==0) return -1;
 			}
 		system("cls");
-		changeColor(GREEN);
-		printf("Compiled succesfully.\n");
-		changeColor(WHITE);
+		colorMessage(GREEN,"Compiled succesfully.\n",WHITE);
 		pressAnyKey();
-		getch();
 		system("cls");
 		int i;
 		sprintf(temp, "%s/inputs", filePath);
@@ -211,34 +196,26 @@ int judge(const char filePath[],char codePath[]){
 		changeColor(RED);
 		printf("\t\tIncorrect : ");
 		changeColor(WHITE);
-		printf("%d\n",wrong);
+		printf("%d\n\n",wrong);
 		int scale=100/numberOfTestCases;
 		printf("Total Score : %d\n",scale*right);
 		printf("_____________________________________\n");
 		if (remove("a.exe") != 0) {
-			changeColor(GREEN);
-			printf("Unable to delete the exe file ...\n");
-			changeColor(WHITE);
+			printError("Unable to delete the exe file ...\n");
 			getch();
 		}
 		if (remove("tempfile.txt") != 0) {
-			changeColor(GREEN);
-			printf("Unable to delete the exe file ...\n");
-			changeColor(WHITE);
+			printError("Unable to delete the exe file ...\n");
 			getch();
 		}
 		pressAnyKey();
-		getch();
 		fflush(stdin);
 		chdir(initialPath);
 		return 0;
 	}
 	else {
-		changeColor(RED);
-		printf("There is a problem with testcase folder.\n");
-		changeColor(WHITE);
+		printError("There is a problem with testcase folder.\n");
 		pressAnyKey();
-		getch();
 		return -1;
 	}
 }
