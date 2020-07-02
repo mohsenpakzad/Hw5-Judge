@@ -108,7 +108,7 @@ int generator() {
 	puts("How do you want me to get inputs?"
 	"\n----------------------"
 	"\n0 : Get inputs one by one in here"
-	"\n1 : Get inputs from excisting files"
+	"\n1 : Get inputs from existing files"
 	"\n----------------------"
 	"\n>>> Enter your choice:");
 	
