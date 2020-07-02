@@ -39,16 +39,18 @@ void help() /*shoud be updated last*/
 	printf("      %-20s\n\n", "--In this mode " CYN "program.c" RESET " is judgeFile.c");
 	printf("  %-15s%20s\n\n", "-J", "Sets program to " MAG "Judge" RESET " mode");
 	printf("      %-20s\n\n", "--In this mode " CYN "program.c" RESET " is suspectFile.c");
+	printf("  %-15s%20s\n\n", "-n", "turns .txt files to specifed format.");
+	printf("  \n%s\n", RED "NOTICE:  " RESET "this option should be run in the same directory as yout input files.");
 	printf("  %-15s%20s\n\n", "-h", "Show all available options.");
 	printf("  \n%s\n", RED "NOTICE:  " RESET "All given arguments must be name of a file exsisting in the current directory or it's path.");
-	printf("  \n%s\n", RED "NOTICE:  " RESET "You can run NormalizeIO.sh in your input directory to convert them to the specified format.");
+	
 }
 
 int main(int argc, char *argv[])
 {
 
 	int opt, necessaryOptionCount = 0;
-	while ((opt = getopt(argc, argv, ":G:Jhs")) != -1)
+	while ((opt = getopt(argc, argv, ":G:Jhns")) != -1)
 	{
 
 		switch (opt)
@@ -68,6 +70,11 @@ int main(int argc, char *argv[])
 		case 'J': //turn on judge module
 			necessaryOptionCount++;
 			judgeModuleState = ON;
+			break;
+
+		case 'n': //test case normalize
+			system("rename \"s/.txt/.in/\" *.txt 2> /dev/null");
+			return 1;
 			break;
 
 		case 'h': //help
