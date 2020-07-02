@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "globalHeader.h"
-//#include <sys/stat.h>
-//#include <sys/types.h>
+
 
 /**
  * @help
@@ -59,6 +58,9 @@ int main(int argc, char *argv[])
 			strcpy(inOutFileAdress, optarg);
 			system("rm -rf /usr/local/adjudicator/temp 2> /dev/null");
 			system("mkdir /usr/local/adjudicator/temp");
+			system("mkdir TestCase");
+			system("mkdir TestCase/Input");
+			system("mkdir TestCase/Output");
 			break;
 
 		case 'J': //turn on judge module
@@ -130,7 +132,6 @@ int main(int argc, char *argv[])
 			//The next piece handels this issue
 			if (argument[strlen(argument) - 1] != '/')
 				strcat(argument, "/");
-
 			strcat(argument, " TestCase/Input");
 			system(argument);
 			strcpy(inOutFileAdress, "TestCase/Input");
@@ -203,7 +204,6 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	//catch
 
 	return 0;
 }
