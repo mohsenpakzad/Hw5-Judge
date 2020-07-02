@@ -156,9 +156,13 @@ int judge(const char filePath[],char codePath[],double timeLimit){
 			} 
 		}
 		while(compileStatus!=0){
-			printf("codePath is:%s\n",codePath);
+			changeColor(RED);
 			compileStatus=compile(codePath,exeDir);
-			if(compileStatus==0) break;
+			if(compileStatus==0){
+				changeColor(WHITE);
+				break;
+			}
+			changeColor(WHITE);
 			getch();
 			system("cls");
 			showPath();
@@ -168,14 +172,15 @@ int judge(const char filePath[],char codePath[],double timeLimit){
 			if(strcmp(codePath,"0")==0) return -1;
 			}
 		system("cls");
+		colorMessage(GREEN,"Compiled succesfully.\n",WHITE);
+		pressAnyKey();
+		system("cls");
 		if(timeLimit==-1){
 			printf("Please input time limit ( in seconds )( if there is no time limit enter 0) : ");
 			scanf("%lf",&timeLimit);
+			printf("\n");
 			pressAnyKey();
 		}
-		system("cls");
-		colorMessage(GREEN,"Compiled succesfully.\n",WHITE);
-		pressAnyKey();
 		system("cls");
 		int i;
 		sprintf(temp, "%s/inputs", filePath);
@@ -183,7 +188,7 @@ int judge(const char filePath[],char codePath[],double timeLimit){
 		printf("number of test cases: %d\n",numberOfTestCases);
 		printf("Time limit : ");
 		if(timeLimit>0){
-			printf("%f\n\n",timeLimit);
+			printf("%fs\n\n",timeLimit);
 		}
 		else{
 			printf("doesn't have.\n\n");

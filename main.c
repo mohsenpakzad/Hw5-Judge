@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
 	char folderPath[MAX_ARRAY_SIZE];
-	char codePath[MAX_ARRAY_SIZE];
+	char codePath[MAX_ARRAY_SIZE]="";
 	int choice;
 	system("cls");
 	if(argc==1){
