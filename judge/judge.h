@@ -1,3 +1,4 @@
 #pragma once
 
-// declare your functions and global variables here
+int compareFile(FILE * fPtr1, FILE * fPtr2);
+void judge(int counter);
