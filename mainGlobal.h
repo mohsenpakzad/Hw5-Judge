@@ -15,5 +15,6 @@
 #define RED "r"
 #define GREEN "g"
 #define WHITE "w"
+#define YELLOW "y"
 
 #endif

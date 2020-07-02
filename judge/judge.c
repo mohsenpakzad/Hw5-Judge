@@ -133,12 +133,14 @@ int checkFormatJudge (const char filePath[]){ // validation
  *
  */
 
-int judge(const char filePath[],char codePath[]){
+int judge(const char filePath[],char codePath[],double timeLimit){
 	int compileStatus=-1; // 0 for ok
 	char exeDir[MAX_ARRAY_SIZE],cmd[MAX_ARRAY_SIZE],temp[MAX_ARRAY_SIZE],strNumber[4];
 	char initialPath[MAX_ARRAY_SIZE];
 	strcpy(initialPath,getcwd(temp, sizeof(temp)));
 	int right=0, wrong=0, numberOfTestCases;
+	clock_t time; 
+	double timeTaken;
 	sprintf(exeDir, "%s/a.exe", filePath);
 	if ( checkFormatJudge(filePath)==0 ){ // 0 for ok
 		pressAnyKey();
@@ -147,10 +149,14 @@ int judge(const char filePath[],char codePath[]){
 			showPath();
 			printf("Please input path for code needed to be judged ( including code itself )( 0 to exit ): ");
 			scanf("%s",codePath);
-			if(strcmp(codePath,"0")==0) return -1;
 			fflush(stdin);
+			if(strcmp(codePath,"0")==0){
+				fflush(stdin);
+				return -1;
+			} 
 		}
 		while(compileStatus!=0){
+			printf("codePath is:%s\n",codePath);
 			compileStatus=compile(codePath,exeDir);
 			if(compileStatus==0) break;
 			getch();
@@ -162,30 +168,60 @@ int judge(const char filePath[],char codePath[]){
 			if(strcmp(codePath,"0")==0) return -1;
 			}
 		system("cls");
+		if(timeLimit==-1){
+			printf("Please input time limit ( in seconds )( if there is no time limit enter 0) : ");
+			scanf("%lf",&timeLimit);
+			pressAnyKey();
+		}
+		system("cls");
 		colorMessage(GREEN,"Compiled succesfully.\n",WHITE);
 		pressAnyKey();
 		system("cls");
 		int i;
 		sprintf(temp, "%s/inputs", filePath);
 		numberOfTestCases=numberOfFiles(temp);
-		printf("number of test cases: %d\n\n",numberOfTestCases);
+		printf("number of test cases: %d\n",numberOfTestCases);
+		printf("Time limit : ");
+		if(timeLimit>0){
+			printf("%f\n\n",timeLimit);
+		}
+		else{
+			printf("doesn't have.\n\n");
+		}
 		chdir(filePath);
 		for(i=0;i<numberOfTestCases;i++){
+			time = clock(); 
 			sprintf(cmd, "a.exe <inputs/input%d.txt >tempfile.txt", i+1);
 			system(cmd);
 			sprintf(temp, "outputs/output%d.txt", i+1);
+			time = clock() - time;
 			//system("code.exe <in/1.txt >../testcases/outputs/1.txt"); // sample
+			timeTaken = ((double)time)/CLOCKS_PER_SEC;
 			if(compareFiles(temp,"tempfile.txt")==0){
-				changeColor(GREEN);
-				printf("TestCase #%d : Right.\n",i+1);
-				changeColor(WHITE);
-				right++;
+				if(timeLimit>0&&timeTaken>timeLimit){
+					changeColor(YELLOW);
+					printf("TestCase #%d : TimeLimit.\n",i+1);
+					changeColor(WHITE);
+				}
+				else{
+					changeColor(GREEN);
+					printf("TestCase #%d : Right.\n",i+1);
+					changeColor(WHITE);
+					right++;
+				}
 			}
 			else{
-				changeColor(RED);
-				printf("TestCase #%d : Wrong.\n",i+1);
-				changeColor(WHITE);
-				wrong++;
+				if(timeLimit>0&&timeTaken>timeLimit){
+					changeColor(YELLOW);
+					printf("TestCase #%d : TimeLimit.\n",i+1);
+					changeColor(WHITE);
+				}
+				else{
+					changeColor(RED);
+					printf("TestCase #%d : Wrong.\n",i+1);
+					changeColor(WHITE);
+					wrong++;
+				}
 			}
 		}
 		printf("_____________________________________");
@@ -199,7 +235,7 @@ int judge(const char filePath[],char codePath[]){
 		printf("%d\n\n",wrong);
 		int scale=100/numberOfTestCases;
 		printf("Total Score : %d\n",scale*right);
-		printf("_____________________________________\n");
+		printf("_____________________________________\n\n");
 		if (remove("a.exe") != 0) {
 			printError("Unable to delete the exe file ...\n");
 			getch();
