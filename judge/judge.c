@@ -78,7 +78,7 @@ void judge(int counter) {
 		FILE* lastOutput;
 		lastOutput = fopen(mainOutputPath, "r");
 		
-		printf("test case #%d: ", i);
+		printf("test case #%-3d: ", i);
 		if (compareFile(newOutput, lastOutput)) {
 			correct++;
 			puts("\tPass");
