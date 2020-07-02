@@ -23,8 +23,6 @@ char suspectFileAdress[ADRESS_ARRAY_SIZE] = " ";
  */
 int typeCExist(const char fileAdress[ADRESS_ARRAY_SIZE])
 {
-    
-
     if ((strstr(fileAdress, ".c") != NULL) && (fileAdress[strlen(fileAdress) - 1] == 'c'))
     {
         return YES;
