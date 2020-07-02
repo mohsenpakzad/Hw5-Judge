@@ -1,58 +1,84 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "judge.h" // judge.h
+#include "../globalHeader.h"
+#include "judgeHeader.h"
 
-int compileMe(char address[]) {
-	char command[1000] = "gcc -o Terminal";
-	strcat(command, address); // Create the command
-	return system(command);
-}
+int judge(char fileAdress[], int inputCount)
+{
+    if (suspectCompile(fileAdress) == NO)
+        return NO;
+    //else suspect is our file
+    int count, score = 0;
+    char number[10], hostString[MAX_OUTPUT_LENGTH], checkString[MAX_OUTPUT_LENGTH];
+    FILE *hostFile, *checkFile;
+    putchar('\n');
+    for (count = 1; count <= inputCount; count++)
+    {
+        /*Create Command For CMD!*/
+        /*File Structure ---> input1.txt*/
 
+        sprintf(number, "%d", count); //convert int to char.
 
-void judge(char terminalAddress[], int inputCount, int result[]) { // terminalAddress as the exe file after compile
-	int count;
-	char number[10] = { 10 * '/0' }, hostString[MAX_OUTPUT_LENGTH], checkString[MAX_OUTPUT_LENGTH];
-	FILE* hostFile, *checkFile;
+        char command[2 * ADRESS_ARRAY_SIZE] = "./suspect < TestCase/Input/";
+        strcat(command, number);
+        strcat(command, ".in > /usr/local/adjudicator/temp/resHold/");
+        strcat(command, number);
+        strcat(command, ".out");
+        system(command);
+        char hostFileHold[2 * ADRESS_ARRAY_SIZE];
+        char hostFilename[2 * ADRESS_ARRAY_SIZE] = "TestCase/Output/";
+        strcat(hostFilename, number);
+        strcpy(hostFileHold, hostFilename);
+        strcat(hostFileHold, ".txt");
+        strcat(hostFilename, ".out");
+        strcpy(command, "cp ");
+        strcat(command, hostFilename);
+        strcat(command, " ");
+        strcat(command, hostFileHold);
+        system(command);
 
+        char checkFileHold[2 * ADRESS_ARRAY_SIZE];
+        char checkFilename[2 * ADRESS_ARRAY_SIZE] = "/usr/local/adjudicator/temp/resHold/";
+        strcat(checkFilename, number);
+        strcpy(checkFileHold, checkFilename);
+        strcat(checkFileHold, ".txt");
+        strcat(checkFilename, ".out");
+        strcpy(command, "cp ");
+        strcat(command, checkFilename);
+        strcat(command, " ");
+        strcat(command, checkFileHold);
+        system(command);
 
-	for (count = 1; count <= inputCount; count++) {
-		/*Create Command For CMD!*/
-		/*File Structure ---> input1.txt*/
-		sprintf(number, "%d", count); //convert int to char.
-		char command[100] = ".\\Terminal.exe <..\\in\\input"; strcat(command, number); strcat(command, ".txt >..\\out\\output");
-		strcat(command, number); strcat(command, ".txt");
-		
-		char hostFilename[1000] = "..\\generate\\out\\output"; strcat(hostFilename, number); strcat(hostFilename, ".txt");
-		char checkFilename[1000] = "..\\out\\output"; strcat(hostFilename, number); strcat(hostFilename, ".txt");
-	
+        //printf("host file name %s\n",hostFilename);
+        //printf("check file name %s\n",checkFilename);
 
-		hostFile = fopen(hostFilename, "r");
-		while (fgets(hostString, MAX_OUTPUT_LENGTH, hostFile) != NULL);
-		fclose(hostFile);
+        hostFile = fopen(hostFileHold, "r");
 
-		checkFile = fopen(checkFilename, "r");
-		while (fgets(checkString, MAX_OUTPUT_LENGTH, checkFile) != NULL);
-		fclose(checkFile);
+        while (fgets(hostString, MAX_OUTPUT_LENGTH, hostFile) != NULL)
+            ;
+        fclose(hostFile);
 
-		if (strcmp(hostString, checkString) == ACCEPTED)
-			result[count - 1] = 1; // if judge output and generator out put are the same result must be 1.
-		else
-			result[count - 1] = 0; // zero means "not the same!".
-	}
-}
+        checkFile = fopen(checkFileHold, "r");
+        while (fgets(checkString, MAX_OUTPUT_LENGTH, checkFile) != NULL)
+            ;
+        fclose(checkFile);
+        if (strcmp(hostString, checkString) == 0)
+        {
+            printf("\tTest Case #%d: " BGGREEN BLD " Accepted " RESET "\n", count);
+            score++;
+        }
+        else
+            printf("\tTest Case #%d: " BGRED BLD " Declined " RESET "\n", count);
 
+        strcpy(command, "rm -rf ");
+        strcat(command, hostFileHold);
+        system(command);
+        strcpy(command, "rm -rf ");
+        strcat(command, checkFileHold);
+        system(command);
+    }
+    printf(BLD"\n\t----------------------------\n\tScore: %.2f\n"RESET,(float)(score*100)/inputCount);
 
-void judgeResult(int result[], int testCasesCount) {
-	for (int index = 0; index <= testCasesCount; index) {
-		if (result[index])
-			printf("Test Case #%d:\nAccepted", index + 1);
-		else
-			printf("Test Case #%d:\nDeclined", index + 1);
-	}
-}
-
-
-int main() {
-	return 0;
+    return YES;
 }
