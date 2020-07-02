@@ -1,15 +1,8 @@
-#include "globalHeader.h"
+#include "../globalHeader.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-void moveToAnAddress(char address[]){
-   char str[100+3];
-  strcpy(str, "cd ");
-  strcpy(str, address);
-  //str = "cd address"
-  system(str);
-}
 void giveInputToCodeAndSaveOutput(char codeAddress[],char inputAddress[],char outputAddress[]){
   char linuxCode[300+6];
   strcpy(linuxCode, codeAddress);
@@ -19,7 +12,8 @@ void giveInputToCodeAndSaveOutput(char codeAddress[],char inputAddress[],char ou
   strcat(linuxCode, outputAddress);
   //linuxCode = "codeAddress < inputAddress > outputAddress"
   system(linuxCode); 
-}   
+}  
+
 /**
  * fucntion compiles judge file and puts it into temp for further use
  * @param fileAdress address of judge file
@@ -28,16 +22,16 @@ void giveInputToCodeAndSaveOutput(char codeAddress[],char inputAddress[],char ou
 int judgeCompile(const char fileAdress[ADRESS_ARRAY_SIZE])
 {
     char argument[2 * ADRESS_ARRAY_SIZE];
-    
-    system("touch /usr/local/adjudicator/temp/judgeCompilerLog.txt");
+    system("rm -rf /usr/local/adjudicator/temp/gccLog.txt 2> /dev/null");
+    //system("touch /usr/local/adjudicator/temp/judgeCompilerLog.txt");
     strcpy(argument, "gcc -o gavel ");
     strcat(argument, fileAdress);
-    strcat(argument, " -lm 2> /usr/local/adjudicator/temp/judgeCompilerLog.txt");
+    system("touch /usr/local/adjudicator/temp/gccLog.txt");
+    strcat(argument, " 2> /usr/local/adjudicator/temp/gccLog.txt");
     system(argument);
-    //printf("%s",argument);
-    
+
     FILE *ptr;
-    ptr = fopen("/usr/local/adjudicator/temp/judgeCompilerLog.txt", "r");
+    ptr = fopen("/usr/local/adjudicator/temp/gccLog.txt", "r");
 
     char character;
     character = fgetc(ptr);
@@ -54,10 +48,9 @@ int judgeCompile(const char fileAdress[ADRESS_ARRAY_SIZE])
         fclose(ptr);
         return NO; //hey in your module if this returns NO you should terminate your module and return  a termination value to main(NO)
     }
-    system("mv gavel /usr/local/adjudicator/temp/");
-    system("rm -f /usr/local/adjudicator/temp/judgeCompilerLog.txt");
-    fclose(ptr);
-    return YES;
+
+
+    system("cp gavel /usr/local/adjudicator/temp/");
+    system("rm -rf gavel");
+    return YES; //turn to yes
 }
-
-
