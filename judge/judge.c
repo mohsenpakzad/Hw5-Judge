@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#define MAX_SIZE 1000
+#include "judge.h"
 
 extern char exeFile[];
 
@@ -63,8 +60,11 @@ int compareFile(FILE* fPtr1, FILE* fPtr2) {
 * @param number of testcases
 */
 void judge(int counter) {
-	int i, correct = 0;
-	puts("Details:");
+	int i, correct = 0, maxScore;
+	
+	puts(">>> Enter an integer as maximum score: ");
+	scanf("%d", &maxScore);
+	puts("");
 	
 	for (i = 1; i < counter; i++) {
 		// running & giving input to exe file
@@ -90,8 +90,5 @@ void judge(int counter) {
 		fclose(lastOutput);
 	}
 	
-	int maxScore;
-	puts("\n>>> Enter an integer as maximum score: ");
-	scanf("%d", &maxScore);
 	printf("\nYour code's final score is %d out of %d\n", correct * maxScore / (counter - 1), maxScore);
 }
