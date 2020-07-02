@@ -57,7 +57,8 @@ int main(int argc, char *argv[])
 			generatorModuleState = ON;
 			strcpy(inOutFileAdress, optarg);
 			system("rm -rf /usr/local/adjudicator/temp 2> /dev/null");
-			system("mkdir /usr/local/adjudicator/temp");
+			system("mkdir /usr/local/adjudicator/temp 2> /dev/null");
+			system("rm -rf TestCase");
 			system("mkdir TestCase");
 			system("mkdir TestCase/Input");
 			system("mkdir TestCase/Output");
