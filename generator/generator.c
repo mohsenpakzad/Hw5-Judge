@@ -115,8 +115,8 @@ int generator() {
 	int choice;
 	scanf("%d", &choice);
 
-	system("mkdir in");
-	system("mkdir out");
+	system("if not exist \"in\" mkdir in");
+	system("if not exist \"out\" mkdir out");
 
 	if (choice)
 		return generatorFromFile();
