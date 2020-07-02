@@ -41,6 +41,7 @@ void help() /*shoud be updated last*/
 	printf("      %-20s\n\n", "--In this mode " CYN "program.c" RESET " is suspectFile.c");
 	printf("  %-15s%20s\n\n", "-h", "Show all available options.");
 	printf("  \n%s\n", RED "NOTICE:  " RESET "All given arguments must be name of a file exsisting in the current directory or it's path.");
+	printf("  \n%s\n", RED "NOTICE:  " RESET "You can run NormalizeIO.sh in your input directory to convert them to the specified format.");
 }
 
 int main(int argc, char *argv[])
