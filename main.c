@@ -35,7 +35,7 @@ int main(){
     while(1){
 
         system("cls");
-        printf("--Please enter the name of test cases folder--\n");
+        printf("\n--Please enter the name of test cases folder--\n");
         scanf("%s",folderOfTestCases);
         numberOfTestCases = check(folderOfTestCases);
         if (numberOfTestCases != 0 )
@@ -45,14 +45,14 @@ int main(){
     while(1){
 
         system("cls");
-        printf("--Please enter the name of file--\n");
+        printf("\n--Please enter the name of file--\n");
         scanf("%s", fileName);
 
         int valid = generator(fileName, folderOfTestCases, numberOfTestCases);
 
         if (valid == 0) {
             system("cls");
-            printf("--Compile Error!--\n");
+            printf("\n--Compile Error!--\n");
             system("pause");
         }
         else
@@ -63,8 +63,8 @@ int main(){
     strcpy(outPutFile, fileName);
     strcat(outPutFile, "Output");
 
-    FILE* answers = fopen("finalResult.txt", "r");
     int numberOfTrueTestCases = judge(folderOfTestCases, outPutFile, numberOfTestCases);
+    FILE* answers = fopen("finalResult.txt", "r");
 
     system("cls");
 
@@ -83,3 +83,4 @@ int main(){
 
     return 0;
 }
+
