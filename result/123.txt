@@ -1,0 +1,41 @@
+Test Case "input1.txt":
+	Accepted!
+Test Case "input10.txt":
+	Accepted!
+Test Case "input11.txt":
+	Accepted!
+Test Case "input12.txt":
+	Accepted!
+Test Case "input13.txt":
+	Accepted!
+Test Case "input14.txt":
+	Accepted!
+Test Case "input15.txt":
+	Accepted!
+Test Case "input16.txt":
+	Accepted!
+Test Case "input17.txt":
+	Accepted!
+Test Case "input18.txt":
+	Accepted!
+Test Case "input19.txt":
+	Accepted!
+Test Case "input2.txt":
+	Accepted!
+Test Case "input20.txt":
+	Accepted!
+Test Case "input3.txt":
+	Accepted!
+Test Case "input4.txt":
+	Accepted!
+Test Case "input5.txt":
+	Accepted!
+Test Case "input6.txt":
+	Accepted!
+Test Case "input7.txt":
+	Accepted!
+Test Case "input8.txt":
+	Accepted!
+Test Case "input9.txt":
+	Accepted!
+Point : 20/20

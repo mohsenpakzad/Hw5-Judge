@@ -1,3 +1,12 @@
 #pragma once
 
-// declare your functions and global variables here
+
+int compileJudge();
+
+void generateOutputOfJudge();
+
+void judgeLoader(int currentState);
+
+void compare();
+
+void printResult();
