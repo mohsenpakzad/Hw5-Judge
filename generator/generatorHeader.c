@@ -3,6 +3,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+/**
+*function uses linuxs piping functionality to direct input and output
+*@param program address
+*@param input file address
+*@param output file address
+*/
 void giveInputToCodeAndSaveOutput(char codeAddress[],char inputAddress[],char outputAddress[]){
   char linuxCode[300+6];
   strcpy(linuxCode, codeAddress);
