@@ -40,7 +40,7 @@ void help() /*shoud be updated last*/
 	printf("  %-15s%20s\n\n", "-J", "Sets program to " MAG "Judge" RESET " mode");
 	printf("      %-20s\n\n", "--In this mode " CYN "program.c" RESET " is suspectFile.c");
 	printf("  %-15s%20s\n\n", "-n", "turns .txt files to specifed format.");
-	printf("  \n%s\n", RED "NOTICE:  " RESET "this option should be run in the same directory as yout input files.");
+	printf("  %s\n\n", RED "NOTICE:  " RESET "this option should be run in the same directory as yout input files.");
 	printf("  %-15s%20s\n\n", "-h", "Show all available options.");
 	printf("  \n%s\n", RED "NOTICE:  " RESET "All given arguments must be name of a file exsisting in the current directory or it's path.");
 	
