@@ -59,7 +59,7 @@ void generateProcces() {
 * this function do generate procces : generate output file related to each input file
  * and make directory that contains output files near the input directory .
 *
-* @param aon : ,
+* @param addressType : ,
 * @return :Nothing;).
 */
 void maketastcase(int addressType){
