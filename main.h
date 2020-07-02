@@ -69,10 +69,10 @@ int parser(int argc , char *argv[]){
 		return 3;
 	}
 	else if ((strcmp(argv[1],"-h")==0 || strcmp(argv[1],"-h")==0 || strcmp(argv[1],"-?")==0 || strcmp(argv[1],"-help")==0) && argc==2){
-		return 4;
+		return 5;
 	}
 	else if(strcmp(argv[1],"-j")==0 && argc==7){
-		return 5;
+		return 4;
 	}
 	else {
 		return 0;

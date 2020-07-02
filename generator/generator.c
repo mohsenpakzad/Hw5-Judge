@@ -29,19 +29,17 @@ int endsWith(const char str[], const char suffix[]){
  * 
  * @param number is the string needed to be checked
  *
- * @return integer 1 for being all numerical and 0 otherwise
+ * @return integer 0 if "number" string is numerical otherwise 1
  *
  */
 
 int isNumerical(const char number[]){
 	int i=0;
-	while(number[i]){
-		if(!isdigit(number[i])){
-			return 0;
-		}
-		i++;
-	}
-	return 1; // 1 for ok
+	
+	while(number[i])
+		if(!isdigit(number[i++]))
+			return 1;
+	return 0; // 1 for ok
 }
 
 /** 
@@ -56,13 +54,16 @@ int isNumerical(const char number[]){
 
 int checkInputs(char inputs[][MAX_ARRAY_SIZE], int inputsLen){
 	int check[MAX_ARRAY_SIZE], index;
+	
 	for(index=0; index<inputsLen; index++)
 		check[index] = 0;
+		
 	for(index=0; index<inputsLen; index++){
-		if(!isNumerical(inputs[index]))
+		if(isNumerical(inputs[index]))
 			return 1;
 		check[atoi(inputs[index])-1] = 1;
 	}
+	
 	for(index=0; index<inputsLen; index++)
 		if(check[index] == 0)
 			return 1;
@@ -79,17 +80,18 @@ int checkInputs(char inputs[][MAX_ARRAY_SIZE], int inputsLen){
  */
 
 int checkFormat(const char filePath[]){ // validation
-	if(checkDir(filePath)==-1){
+	if(checkDir(filePath)==-1){ // check address validation
 		printError("the given path is incorrect...\n");
 		return 1;
 	}
 	chdir(filePath);
+	
 	char checkFile[MAX_ARRAY_SIZE];
 	struct dirent *de; // explained in __generate__ function
 	DIR *dr; // DIR pointer for directory search 
 	
 	int inCheck = 0, codeCheck = 0;
-	dr = opendir(".");
+	dr = opendir("."); // pointer to current directory
 	while ((de = readdir(dr)) != NULL){
 		strcpy(checkFile, de->d_name);
 		if(!strcmp(checkFile, "..") || !strcmp(checkFile, "."))	// "." and ".." are directory paths that are always present
@@ -103,21 +105,22 @@ int checkFormat(const char filePath[]){ // validation
 			return 1;
 		}
 	}
-	if(inCheck != 1){
+	if(inCheck != 1){ // check existence of "in" folder
 		printError("the main folder must contain the \"in\" folder...\n");
 		return 1;
 	}	
-	if(codeCheck != 1){
+	if(codeCheck != 1){ // check existence of "code.c" file
 		printError("the main folder must contain the \"code.c\"...\n");
 		return 1;
 	}
-	int numberOfInputs=numberOfFiles("in");
+	
+	int numberOfInputs = numberOfFiles("in");
 	char inputs[numberOfInputs][MAX_ARRAY_SIZE];
 	int  inputsLen = 0;
-	dr = opendir("in");							// checking the "in" folder that should only include .txt
-	while ((de = readdir(dr)) != NULL){
+	dr = opendir("in");							
+	while ((de = readdir(dr)) != NULL){ // checking the "in" folder should only include ".txt" files
 		strcpy(checkFile, de->d_name);
-		if(!strcmp(checkFile, "..") || !strcmp(checkFile, "."))
+		if(!strcmp(checkFile, "..") || !strcmp(checkFile, "."))	// "." and ".." are directory paths that are always present
 			continue;
 		else if(endsWith(checkFile, ".txt")){
 			printError("the \"in\" folder should only include \".txt\" files...\n");
@@ -126,11 +129,10 @@ int checkFormat(const char filePath[]){ // validation
 		checkFile[strlen(checkFile)-4] = '\0';
 		strcpy(inputs[inputsLen++], checkFile);
 	}
-	if(!inputsLen){
+	if(!inputsLen){ // check emptiness of "in" folder
 		printError("the \"in\" folder should not be empty...\n");
 		return 1;
 	}
-	
 	if(checkInputs(inputs, inputsLen)){	// checking file names
 		printError("file names must be numerical and sorted...\n");
 		return 1;	
@@ -152,42 +154,45 @@ int generator(const char filePath[]){
 	int compileStatus=-1; // 0 for ok
 	int fileFormatError=-1; // 0 for ok
 	int numberOfInputs,copyResult;
-	char testCaseDir[MAX_ARRAY_SIZE];
-	char testCaseDirIn[MAX_ARRAY_SIZE];
-	char testCaseDirOut[MAX_ARRAY_SIZE];
-	char cmd[MAX_ARRAY_SIZE];
-	char strNumber[MAX_ARRAY_SIZE];
+	char testCaseDir[MAX_ARRAY_SIZE]; // address of "testcases" folder
+	char testCaseDirIn[MAX_ARRAY_SIZE]; // address of "inputs" folder
+	char testCaseDirOut[MAX_ARRAY_SIZE]; // address of "outputs" folder
+	char cmd[MAX_ARRAY_SIZE]; // comman lines for system
 	char buffer[MAX_ARRAY_SIZE];
-	char completeFilePath[MAX_ARRAY_SIZE];
+	char completeFilePath[MAX_ARRAY_SIZE]; // address of testcode (code.c)
 	char temp[MAX_ARRAY_SIZE];
-	char initialPath[MAX_ARRAY_SIZE];
-	strcpy(initialPath,getcwd(buffer, sizeof(buffer)));
-	sprintf(testCaseDir, "%s/../testcases", filePath);
-	sprintf(testCaseDirIn, "%s/inputs", testCaseDir);
-	sprintf(testCaseDirOut, "%s/outputs", testCaseDir);
-	fileFormatError=checkFormat(filePath);
+	char initialPath[MAX_ARRAY_SIZE]; // address of main folder
+	strcpy(initialPath, getcwd(buffer, sizeof(buffer)));
+	
+	fileFormatError = checkFormat(filePath);
 	chdir(initialPath);
 	if(fileFormatError==0){ // checking for validation of path file given
-		sprintf(completeFilePath, "%s/code.c", filePath);
-		sprintf(buffer, "%s/code.exe", filePath); // place and name of result exe file
-		compileStatus=compile(completeFilePath,buffer);
-		sprintf(buffer, "%s/in", filePath);		
-		numberOfInputs=numberOfFiles(buffer);
+		sprintf(completeFilePath, "%s/code.c", filePath); // address of testcode (code.c)
+		sprintf(buffer, "%s/code.exe", filePath); // address and name of result exe file
+		compileStatus = compile(completeFilePath,buffer);
+		sprintf(buffer, "%s/in", filePath);
+		numberOfInputs = numberOfFiles(buffer);
 	}
 	else{
 		pressAnyKey();
 		return -1;
 	}
+	
 	if(compileStatus==0){
 		colorMessage(GREEN,"Compiled succesfully.\n",WHITE);
 		pressAnyKey();
+		
+		sprintf(testCaseDir, "%s/../testcases", filePath);
 		mkdir(testCaseDir);
+		sprintf(testCaseDirIn, "%s/inputs", testCaseDir);
 		mkdir(testCaseDirIn);
+		sprintf(testCaseDirOut, "%s/outputs", testCaseDir);
 		mkdir(testCaseDirOut);
-		int i;
 		chdir(filePath);
 		system("cls");
-		for(i=0;i<numberOfInputs;i++){ // generating ouput from given code
+		
+		int i;
+		for(i=0; i<numberOfInputs; i++){ // generating output from given code
 			sprintf(cmd, "code.exe <in/%d.txt >../testcases/outputs/output%d.txt", i+1, i+1);			
 			puts(cmd);
 			system(cmd);
@@ -195,16 +200,18 @@ int generator(const char filePath[]){
 		}
 		// assume every output is ok :
 		showPath();
-		for(i=0;i<numberOfInputs;i++){ // loop to create input files in testcase folder
+		
+		for(i=0; i<numberOfInputs; i++){ // loop to create input files in testcase folder
 			sprintf(temp, "in/%d.txt", i+1);
-			sprintf(buffer, "../testcases/inputs/input%d.txt", i+1);
 			puts(temp);
-			copyResult=copyFile(buffer,temp);
+			sprintf(buffer, "../testcases/inputs/input%d.txt", i+1);
+			copyResult = copyFile(buffer,temp);
+			
 			if(copyResult==-1){
 				printError("Error accured ...\n");
 				printError("Failed to copy inputs to testcase folder.");
 				pressAnyKey();
-				if (remove("code.exe") != 0) {
+				if (remove("code.exe") != 0) { // try to delete the executable testcode (code.exe)
 					printError("Unable to delete the exe file ...");
 					getch();
 				}
@@ -212,13 +219,13 @@ int generator(const char filePath[]){
 				return -1;
 			}	
 		}
-		if (remove("code.exe") != 0) {
+		if (remove("code.exe") != 0) { // try to delete the executable testcode (code.exe)
 			printError("Unable to delete the exe file ...");
 			getch();
 		}
 		chdir(initialPath);
 		system("cls");
-		colorMessage(GREEN,"Done.\n",WHITE);
+		colorMessage(GREEN, "Done.\n", WHITE);
 		pressAnyKey();
 		system("cls");
 	}
