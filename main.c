@@ -33,12 +33,17 @@ int main(){
     system("pause");
 
     while(1){
+        
         system("cls");
         printf("--Please enter the name of test cases folder--\n");
+        
         scanf("%s",folderOfTestCases);
+        
         numberOfTestCases = check(folderOfTestCases);
+        
         if (numberOfTestCases != 0 )
             break;
+        
     }
 
     while(1){
