@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#define MAX_PATH_SIZE 100
-#define MAX_COMMAND_SIZE 1000
+#include "generator.h"
 
 extern char input[], exeFile[];
 
@@ -27,12 +23,13 @@ int doesExist(const char* name) {
 * @return integer as number of testcases
 */
 int generatorFromFile() {
-	puts("\n<< DESCRIPTION >>"
+	puts("<< DESCRIPTION >>"
 		"\nPut all of your input files in folder \"in\", and name them using name format below:"
 		"\ninput[input_number].txt\n"
 		"\nAfter you did steps above,");
 	
 	system("pause");
+	system("cls");
 	getchar(); // emptying buffer (extra \n in buffer)
 	
 	char inputPath[MAX_PATH_SIZE];
@@ -61,8 +58,8 @@ int generatorFromFile() {
 */
 int generatorFromCMD() {
 	int counter = 1;
-	puts("\n<< DESCRIPTION >>"
-		"\nEnter each input line for your testcase in one line."
+	puts("<< DESCRIPTION >>"
+		"\nEnter each line of any input in one line."
 		"\nEnter \"EOT\" at the end of each testcase."
 		"\nEnter \"END\" to stop."
 		"\n---");
@@ -96,6 +93,7 @@ int generatorFromCMD() {
 		
 		counter++;
 	}
+	system("cls");
 	return counter;
 }
 
@@ -106,19 +104,21 @@ int generatorFromCMD() {
 */
 int generator() {
 	puts("How do you want me to get inputs?"
-	"\n----------------------"
-	"\n0 : Get inputs one by one in here"
-	"\n1 : Get inputs from existing files"
-	"\n----------------------"
+	"\n--------------------------------"
+	"\n1 : Get inputs one by one in here"
+	"\n2 : Get inputs from existing files\n"
 	"\n>>> Enter your choice:");
 	
 	int choice;
 	scanf("%d", &choice);
-
+	while(choice != 1 && choice != 2)
+		scanf("%d", &choice);
+	system("cls");
+	
 	system("if not exist \"in\" mkdir in");
 	system("if not exist \"out\" mkdir out");
 
-	if (choice)
+	if (choice == 2)
 		return generatorFromFile();
 	else
 		return generatorFromCMD();
