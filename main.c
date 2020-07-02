@@ -37,11 +37,15 @@ int compile() {
 			
 			if (doesExist(exeFile)) { //there is no compile errors
 				puts("\n******************************\n* File compiled successfully *\n******************************\n");
+				system("pause");
+				system("cls");
 				return 1;
 			}
 			return 0;
-		} else //file not exist to compile
-			puts("\n>>> File does not exist! Please check the file name and try again:");
+		} else{ //file not exist to compile
+			system("cls");
+			puts(">>> File does not exist! Please check the file name and try again:");
+		}
 	}
 }
 
@@ -56,7 +60,7 @@ int main() {
 	
 	if (compile()) {
 		len = generator();
-		puts("\n>>> Enter the c file name that is going to be tested: (don't add .c at the end)");
+		puts(">>> Enter the c file name that is going to be tested: (don't add .c at the end)");
 		
 		if (compile())
 			judge(len);
