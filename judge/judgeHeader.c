@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../globalHeader.h"
+/** 
+*function compiles suspect file
+*@param adress of files that needs to be tested
+*@return an int show if function ran without error
+*/
 int suspectCompile(char fileAdress[ADRESS_ARRAY_SIZE]){
     char argument[2 * ADRESS_ARRAY_SIZE];
     system("rm -rf /usr/local/adjudicator/temp/resHold 2> /dev/null");
