@@ -1,40 +1,56 @@
+#include "../globalHeader.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include "generatorHeader.h"
+#include <stdlib.h>
 
-int generator(const char fileAdress[ADRESS_ARRAY_SIZE])
+void giveInputToCodeAndSaveOutput(char codeAddress[],char inputAddress[],char outputAddress[]){
+  char linuxCode[300+6];
+  strcpy(linuxCode, codeAddress);
+  strcat(linuxCode, " < ");
+  strcat(linuxCode, inputAddress);
+  strcat(linuxCode, " > ");
+  strcat(linuxCode, outputAddress);
+  //linuxCode = "codeAddress < inputAddress > outputAddress"
+  system(linuxCode); 
+}  
+
+/**
+ * fucntion compiles judge file and puts it into temp for further use
+ * @param fileAdress address of judge file
+ * @return 1 for YES and ) for no
+ */
+int judgeCompile(const char fileAdress[ADRESS_ARRAY_SIZE])
 {
-  //moveToAnAddress(inOutAdress);
-  if (judgeCompile(fileAdress) == NO)
-    return NO;
-  int i = 1, numberOfTestCases = inFileCounter("TestCase/Input", ".in");
-  if (numberOfTestCases == -1)
-  {
-    printf("  \n%s\n\n", YEL "WARNING:" RESET "  generation process has malfunctioned,\n          Or one of the IO folders has been croupted.\n          You can try running " MAG "Generator" RESET " module again");
-    return -1;
-  }
+    char argument[2 * ADRESS_ARRAY_SIZE];
+    system("rm -rf /usr/local/adjudicator/temp/gccLog.txt 2> /dev/null");
+    //system("touch /usr/local/adjudicator/temp/judgeCompilerLog.txt");
+    strcpy(argument, "gcc -o gavel ");
+    strcat(argument, fileAdress);
+    system("touch /usr/local/adjudicator/temp/gccLog.txt");
+    strcat(argument, " 2> /usr/local/adjudicator/temp/gccLog.txt");
+    system(argument);
 
-  while (i <= numberOfTestCases)
-  {
-    char strNum[ADRESS_ARRAY_SIZE / 4];
-    sprintf(strNum, "%d", i); //int i into string
+    FILE *ptr;
+    ptr = fopen("/usr/local/adjudicator/temp/gccLog.txt", "r");
 
-    //create input name => "input\\in(number).in"
-    char inputName[20];
-    strcpy(inputName, "TestCase/Input/");
-    strcat(inputName, strNum);
-    strcat(inputName, ".in");
+    char character;
+    character = fgetc(ptr);
+    if (character != EOF) // see if ther is actually a complaint
+    {
+        printf("\n\n%s ", YEL "Compiler complaint:" RESET);
 
-    //create output name => "output/out(number).in"
-    char outputName[20];
-    strcpy(outputName, "TestCase/Output/");
-    strcat(outputName, strNum); //add number to output name
-    strcat(outputName, ".out"); //add .out to output name
+        while (character != EOF) // print content of complaint
+        {
+            printf("%c", character);
+            character = fgetc(ptr);
+        }
+        putchar('\n');
+        fclose(ptr);
+        return NO; //hey in your module if this returns NO you should terminate your module and return  a termination value to main(NO)
+    }
 
-    giveInputToCodeAndSaveOutput("/usr/local/adjudicator/temp/gavel", inputName, outputName);
 
-    i++;
-  }
-  return YES;
+    system("cp gavel /usr/local/adjudicator/temp/");
+    system("rm -rf gavel");
+    return YES; //turn to yes
 }
