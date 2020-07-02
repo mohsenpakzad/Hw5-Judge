@@ -4,8 +4,8 @@ sudo apt-get install build-essential #making sure host system has gcc and all es
 rm -f /usr/local/bin/adjudicator
      #COMPILE PROGRESS
 
-gcc -c main.c globalHeader.c generator/generator.c generator/generatorHeader.c judge/judgeHeader.c judge/Judge.c #2> INSTALL_LOG.txt
-gcc -o adjudicator main.o globalHeader.o generator.o generatorHeader.o judgeHeader.o Judge.o -lm 2> INSTALL_LOG.txt #UNFINISHED 
+gcc -c main.c globalHeader.c generator/generator.c generator/generatorHeader.c judge/judgeHeader.c judge/judge.c #2> INSTALL_LOG.txt
+gcc -o adjudicator main.o globalHeader.o generator.o generatorHeader.o judgeHeader.o judge.o -lm 2> INSTALL_LOG.txt #UNFINISHED 
      #1- compilation still needs changes
      #2- gcc will get more arguments as development moves forward #adju is working program name as in adjudicator
      #3- "2> INSTALL_LOG.txt" writes compilation log in .txt
