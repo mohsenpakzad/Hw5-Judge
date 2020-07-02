@@ -81,9 +81,9 @@ void judge(int counter) {
 		printf("test case #%d: ", i);
 		if (compareFile(newOutput, lastOutput)) {
 			correct++;
-			puts("Pass");
+			puts("\tPass");
 		} else
-			puts("Fail");
+			puts("\tFail");
 
 		// finally close files to release resources
 		fclose(newOutput);
@@ -93,5 +93,5 @@ void judge(int counter) {
 	int maxScore;
 	puts("\n>>> Enter an integer as maximum score: ");
 	scanf("%d", &maxScore);
-	printf("\nYour code's final score is %d out of %d", correct * maxScore / (counter - 1), maxScore);
+	printf("\nYour code's final score is %d out of %d\n", correct * maxScore / (counter - 1), maxScore);
 }
