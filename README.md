@@ -71,6 +71,10 @@ Enter the path of C-user-file as same as you did at first step.
     1-You can enter 'd' if you don't want to drag and drop or copy paste.
 
     2-In every step that you have to enter a path, you can simply type "back" to go back.
+    
+    3-Every name for inputs are allowed
+    
+    4-Loading screen
 
 
 #### Folders descriptions ####
