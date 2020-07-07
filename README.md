@@ -53,7 +53,9 @@ If the path was correct, it will ask you to confirm the inputs.
 Then you have to enter the path of the C-main-file. The ways are the same.
 
 
-Note: if there were any mistakes in entering the paths, you will know it.
+Notes: 
+    If there were any mistakes in entering the paths, you will know it.
+    The maximum number of test cases is 500.
 
 
 ### Judge ###
