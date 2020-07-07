@@ -54,8 +54,10 @@ Then you have to enter the path of the C-main-file. The ways are the same.
 
 
 Notes: 
-    If there were any mistakes in entering the paths, you will know it.
-    The maximum number of test cases is 500.
+
+   If there were any mistakes in entering the paths, you will know it.
+    
+   The maximum number of test cases is 500.
 
 
 ### Judge ###
